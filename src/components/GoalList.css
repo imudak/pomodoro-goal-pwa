@@ -1,0 +1,141 @@
+.goals {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.goals-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.goals-count {
+  color: var(--red);
+}
+
+.goals-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.goals-input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  background: var(--surface);
+}
+
+.goals-input:focus {
+  border-color: var(--red);
+}
+
+.goals-add {
+  padding: 12px 20px;
+  background: var(--red);
+  color: white;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.goals-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.goal-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: opacity 0.2s;
+}
+
+.goal-item.done {
+  opacity: 0.55;
+}
+
+.goal-check {
+  background: none;
+  font-size: 1.2rem;
+  padding: 0;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.goal-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.goal-text {
+  display: block;
+  font-size: 0.95rem;
+  word-break: break-word;
+}
+
+.goal-item.done .goal-text {
+  text-decoration: line-through;
+}
+
+.goal-pomo-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.pomo-adj {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pomo-inc {
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: var(--red);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+.goal-pomo-count {
+  font-weight: 600;
+  min-width: 28px;
+  text-align: center;
+}
+
+.goal-delete {
+  background: none;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  padding: 4px;
+  flex-shrink: 0;
+}
+
+.goals-empty {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 40px 0;
+  font-size: 0.95rem;
+}

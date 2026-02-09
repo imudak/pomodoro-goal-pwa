@@ -1,0 +1,119 @@
+.timer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.timer-modes {
+  display: flex;
+  gap: 8px;
+  background: var(--surface);
+  padding: 4px;
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+}
+
+.mode-btn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: none;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.mode-btn.active {
+  background: var(--red);
+  color: white;
+}
+
+.timer-circle {
+  position: relative;
+  width: 240px;
+  height: 240px;
+}
+
+.timer-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.timer-track {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 6;
+}
+
+.timer-progress {
+  fill: none;
+  stroke-width: 6;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.5s ease;
+}
+
+.timer-display {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.timer-time {
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  font-variant-numeric: tabular-nums;
+}
+
+.timer-mode-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.timer-controls {
+  display: flex;
+  gap: 12px;
+}
+
+.control-btn {
+  padding: 12px 32px;
+  border-radius: 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.control-btn.start {
+  background: var(--red);
+  color: white;
+}
+
+.control-btn.start:active {
+  background: var(--red-dark);
+}
+
+.control-btn.pause {
+  background: var(--text-secondary);
+  color: white;
+}
+
+.control-btn.reset {
+  background: var(--surface);
+  color: var(--text-secondary);
+  box-shadow: var(--shadow);
+}
+
+.timer-today {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  background: var(--surface);
+  padding: 12px 20px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
