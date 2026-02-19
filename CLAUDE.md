@@ -1,14 +1,10 @@
 # MUSUBI - ポモドーロ × ゴール
 
-ポモドーロテクニックとゴール管理を組み合わせたPWA
+ポモドーロテクニックと目標管理を組み合わせた集中力最大化PWA
 
-## Initialized with MUSUBI SDD for Claude Code
+## MUSUBI SDD for Claude Code
 
 This project uses **MUSUBI** (Ultimate Specification Driven Development) with 8 skill groups.
-
-### Available Skills
-
-Check `.claude/skills/` directory for all installed skills.
 
 ### Commands
 
@@ -21,29 +17,43 @@ Check `.claude/skills/` directory for all installed skills.
 
 ### Project Memory
 
-- `steering/structure.md` - Architecture patterns
-- `steering/tech.md` - Technology stack
-- `steering/product.md` - Product context
+- `steering/product.ja.md` - プロダクトコンテキスト
+- `steering/tech.ja.md` - 技術スタック
+- `steering/structure.ja.md` - プロジェクト構造
+- `steering/project.yml` - プロジェクト設定
 - `steering/rules/constitution.md` - 9 Constitutional Articles
 
-### Learn More
+## 技術スタック
 
-- [MUSUBI Documentation](https://github.com/nahisaho/MUSUBI)
-- [Constitutional Governance](steering/rules/constitution.md)
-- [8-Stage SDD Workflow](steering/rules/workflow.md)
+- React 18 + TypeScript + Vite
+- vite-plugin-pwa（PWA対応）
+- LocalStorage（データ永続化）
+- Notification API（ポモドーロ完了通知）
 
----
+## 主要コンポーネント
 
-**Agent**: Claude Code
-**Initialized**: 2026-02-15
-**MUSUBI Version**: 0.1.0
+- `src/components/Timer.tsx` - ポモドーロタイマー（25/5/15分）
+- `src/components/GoalList.tsx` - 目標管理
+- `src/components/Stats.tsx` - 統計表示
+- `src/storage.ts` - LocalStorageラッパー
 
-## 作業プロトコル
+## 開発コマンド
 
-作業開始・終了時は `~/projects/flow-manager/docs/flows/work-protocol.md` を参照。
+```bash
+npm run dev     # 開発サーバー
+npm run build   # ビルド
+npm run preview # プレビュー
+```
 
-百式page_id: 3071aeb6-4b1d-81aa-b6fe-d5810d2cc754
+## 開発ルール
 
+- 計画先行: 設計→承認→実装
+- バックエンドサーバーなし（フルクライアントサイド）
+- 機能追加時はMUSUBIプロセスを回す（/sdd-requirementsから）
 
-## 次のアクション
-- ユーザーフィードバック収集 → 改善案検討
+## Git Push ルール
+
+作業完了時は必ず `jj git push` を実行すること。
+- MUSUBIの各ステップ完了時
+- 機能実装完了時
+- steering files 更新時

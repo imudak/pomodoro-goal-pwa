@@ -1,0 +1,44 @@
+# MUSUBI Project Configuration
+name: pomodoro-goal-pwa
+description: ポモドーロテクニックと目標管理を組み合わせた集中力最大化PWA
+locale: ja
+version: "1.0.0"
+created: 2026-02-18
+updated: 2026-02-18
+
+# 事業コンテキスト
+organization: まるふく工房
+owner: imudak
+primary_agent: クロウ候
+
+# サービス設定
+service:
+  name: pomodoro-goal-pwa
+  type: static_pwa
+  hosting: tbd
+
+# Technology Stack
+tech_stack:
+  approach: single
+  languages:
+    - typescript
+  framework: react
+  framework_version: "18"
+  build_tool: vite
+  runtime: browser
+  pwa: true
+  database: localstorage
+  package_manager: npm
+
+# 開発フェーズ
+phases:
+  mvp:
+    name: MVP
+    status: 完了
+    summary: ポモドーロタイマー・目標管理・統計・PWA対応
+
+# ルール
+rules:
+  - 全コード変更前にMUSUBIプロセスを回す
+  - バックエンドサーバーなし（フルクライアントサイド）
+  - データはLocalStorageのみ（外部API不使用）
