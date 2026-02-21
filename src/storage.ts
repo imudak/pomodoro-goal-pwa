@@ -89,6 +89,15 @@ export function saveCurrentDayRecord(goals: Goal[]): void {
   localStorage.setItem(HISTORY_KEY, JSON.stringify(history))
 }
 
+export function incrementGoalPomodoro(goalId: string): Goal | null {
+  const goals = loadGoals()
+  const updated = goals.map(g =>
+    g.id === goalId ? { ...g, pomodorosDone: g.pomodorosDone + 1 } : g
+  )
+  saveGoals(updated)
+  return updated.find(g => g.id === goalId) ?? null
+}
+
 export function loadHistory(): DayRecord[] {
   try {
     return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]')

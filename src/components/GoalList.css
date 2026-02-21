@@ -125,6 +125,29 @@
   text-align: center;
 }
 
+.goal-focus-btn {
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-left: 4px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.goal-focus-btn.active {
+  background: var(--red);
+  color: white;
+  border-color: var(--red);
+}
+
+.goal-item.focused {
+  border-left: 3px solid var(--red);
+}
+
 .goal-delete {
   background: none;
   color: var(--text-secondary);

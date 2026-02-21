@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Timer from './components/Timer'
 import GoalList from './components/GoalList'
 import Stats from './components/Stats'
+import { incrementGoalPomodoro } from './storage'
 import './App.css'
 
 type Tab = 'timer' | 'goals' | 'stats'
@@ -9,8 +10,14 @@ type Tab = 'timer' | 'goals' | 'stats'
 export default function App() {
   const [tab, setTab] = useState<Tab>('timer')
   const [refreshKey, setRefreshKey] = useState(0)
+  const [activeGoalId, setActiveGoalId] = useState<string | null>(null)
 
-  const refresh = () => setRefreshKey(k => k + 1)
+  const handlePomodoroComplete = () => {
+    if (activeGoalId) {
+      incrementGoalPomodoro(activeGoalId)
+    }
+    setRefreshKey(k => k + 1)
+  }
 
   return (
     <div className="app">
@@ -19,8 +26,20 @@ export default function App() {
       </header>
 
       <main className="app-main">
-        {tab === 'timer' && <Timer onPomodoroComplete={refresh} />}
-        {tab === 'goals' && <GoalList key={refreshKey} />}
+        {tab === 'timer' && (
+          <Timer
+            onPomodoroComplete={handlePomodoroComplete}
+            activeGoalId={activeGoalId}
+            onSetActiveGoalId={setActiveGoalId}
+          />
+        )}
+        {tab === 'goals' && (
+          <GoalList
+            key={refreshKey}
+            activeGoalId={activeGoalId}
+            onSetActiveGoalId={setActiveGoalId}
+          />
+        )}
         {tab === 'stats' && <Stats key={refreshKey} />}
       </main>
 

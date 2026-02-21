@@ -3,7 +3,12 @@ import type { Goal } from '../types'
 import { loadGoals, saveGoals, saveCurrentDayRecord } from '../storage'
 import './GoalList.css'
 
-export default function GoalList() {
+interface Props {
+  activeGoalId: string | null
+  onSetActiveGoalId: (id: string | null) => void
+}
+
+export default function GoalList({ activeGoalId, onSetActiveGoalId }: Props) {
   const [goals, setGoals] = useState<Goal[]>(loadGoals)
   const [input, setInput] = useState('')
 
@@ -33,6 +38,7 @@ export default function GoalList() {
   }
 
   const remove = (id: string) => {
+    if (activeGoalId === id) onSetActiveGoalId(null)
     setGoals(prev => prev.filter(g => g.id !== id))
   }
 
@@ -46,6 +52,10 @@ export default function GoalList() {
     setGoals(prev => prev.map(g =>
       g.id === id ? { ...g, pomodorosDone: g.pomodorosDone + 1 } : g
     ))
+  }
+
+  const toggleFocus = (id: string) => {
+    onSetActiveGoalId(activeGoalId === id ? null : id)
   }
 
   const completedCount = goals.filter(g => g.completed).length
@@ -70,7 +80,7 @@ export default function GoalList() {
 
       <ul className="goals-list">
         {goals.map(g => (
-          <li key={g.id} className={`goal-item ${g.completed ? 'done' : ''}`}>
+          <li key={g.id} className={`goal-item ${g.completed ? 'done' : ''} ${activeGoalId === g.id ? 'focused' : ''}`}>
             <button className="goal-check" onClick={() => toggle(g.id)}>
               {g.completed ? '✅' : '⬜'}
             </button>
@@ -82,6 +92,12 @@ export default function GoalList() {
                 <span className="goal-pomo-count">{g.pomodorosDone}/{g.pomodorosTarget}</span>
                 <button className="pomo-adj" onClick={() => updateTarget(g.id, 1)}>+</button>
                 <button className="pomo-inc" onClick={() => incrementPomo(g.id)}>+1</button>
+                <button
+                  className={`goal-focus-btn ${activeGoalId === g.id ? 'active' : ''}`}
+                  onClick={() => toggleFocus(g.id)}
+                >
+                  {activeGoalId === g.id ? '✓ フォーカス中' : '▶ フォーカス'}
+                </button>
               </div>
             </div>
             <button className="goal-delete" onClick={() => remove(g.id)}>✕</button>

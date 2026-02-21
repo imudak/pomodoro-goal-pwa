@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import type { TimerMode } from '../types'
-import { incrementTodayPomodoros, getTodayPomodoros } from '../storage'
+import type { Goal, TimerMode } from '../types'
+import { incrementTodayPomodoros, getTodayPomodoros, loadGoals } from '../storage'
 import './Timer.css'
 
 const DURATIONS: Record<TimerMode, number> = {
@@ -17,13 +17,16 @@ const LABELS: Record<TimerMode, string> = {
 
 interface Props {
   onPomodoroComplete: () => void
+  activeGoalId: string | null
+  onSetActiveGoalId: (id: string | null) => void
 }
 
-export default function Timer({ onPomodoroComplete }: Props) {
+export default function Timer({ onPomodoroComplete, activeGoalId, onSetActiveGoalId }: Props) {
   const [mode, setMode] = useState<TimerMode>('work')
   const [seconds, setSeconds] = useState(DURATIONS.work)
   const [running, setRunning] = useState(false)
   const [todayCount, setTodayCount] = useState(getTodayPomodoros)
+  const [goals, setGoals] = useState<Goal[]>(loadGoals)
   const intervalRef = useRef<number | null>(null)
 
   const stop = useCallback(() => {
@@ -54,6 +57,8 @@ export default function Timer({ onPomodoroComplete }: Props) {
             const count = incrementTodayPomodoros()
             setTodayCount(count)
             onPomodoroComplete()
+            // Reload goals to reflect updated pomodorosDone
+            setGoals(loadGoals())
             // Auto switch to break
             const nextMode = count % 4 === 0 ? 'longBreak' : 'shortBreak'
             setMode(nextMode)
@@ -80,6 +85,8 @@ export default function Timer({ onPomodoroComplete }: Props) {
   const mins = Math.floor(seconds / 60)
   const secs = seconds % 60
   const progress = 1 - seconds / DURATIONS[mode]
+
+  const activeGoal = goals.find(g => g.id === activeGoalId) ?? null
 
   return (
     <div className="timer">
@@ -114,6 +121,28 @@ export default function Timer({ onPomodoroComplete }: Props) {
           </span>
           <span className="timer-mode-label">{LABELS[mode]}</span>
         </div>
+      </div>
+
+      <div className="timer-goal-select">
+        <label className="timer-goal-label" htmlFor="goal-select">取り組む目標:</label>
+        <select
+          id="goal-select"
+          className="timer-goal-dropdown"
+          value={activeGoalId || ''}
+          onChange={e => onSetActiveGoalId(e.target.value || null)}
+        >
+          <option value="">目標を選択...</option>
+          {goals.map(g => (
+            <option key={g.id} value={g.id}>
+              {g.text}（{g.pomodorosDone}/{g.pomodorosTarget}🍅）
+            </option>
+          ))}
+        </select>
+        {activeGoal && (
+          <div className="timer-goal-active">
+            🎯 {activeGoal.text}
+          </div>
+        )}
       </div>
 
       <div className="timer-controls">
