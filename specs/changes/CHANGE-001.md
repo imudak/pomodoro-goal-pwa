@@ -50,19 +50,32 @@ ADHDユーザーの「やれそう感」設計を重視したタスク管理機�
 
 ## Design Changes
 
+**詳細設計書**: `storage/design/task-management-design.md`
+
 ### ADDED
 
-- TaskListコンポーネント（`src/components/TaskList.tsx`）
-- TaskCardコンポーネント（`src/components/TaskCard.tsx`）
-- TaskFormコンポーネント（`src/components/TaskForm.tsx`）
-- タスクデータ型（`src/types/task.ts`）
-- タスクストレージ関数（`src/storage.ts` 拡張）
+- **TaskListコンポーネント** (`src/components/TaskList.tsx`)
+  - Props: `activeTaskId: string | null`, `onSetActiveTaskId`
+  - State: `tasks: Task[]`, `goals: Goal[]`, `showForm: boolean`, `deleteConfirmId: string | null`
+  - 責務: タスク一覧表示（ゴール別グループ化、未完了優先ソート）、CRUD調整
+- **TaskCardコンポーネント** (`src/components/TaskCard.tsx`)
+  - Props: `task`, `goalName`, `isActive`, `onToggleComplete`, `onSelect`, `onDelete`
+  - 責務: statelessカード表示、タスク選択・完了・削除ボタン
+- **TaskFormコンポーネント** (`src/components/TaskForm.tsx`)
+  - Props: `goals: Goal[]`, `onSubmit`, `onCancel`
+  - State: `title`, `goalId`, `estimatedPomodoros`（フォームフィールドのみ）
+- **Task型** (`src/types.ts` に追記、`src/types/task.ts` は作成しない)
+  - `id`, `title`, `goalId`, `completed`, `estimatedPomodoros`, `completedPomodoros`, `createdAt`, `updatedAt`
+- **タスクストレージ関数** (`src/storage.ts` 拡張)
+  - LocalStorage キー: `pomogoal_tasks`（既存プレフィックスに統一）
+  - 追加関数: `loadTasks`, `saveTasks`, `addTask`, `toggleTaskComplete`, `deleteTask`, `incrementTaskPomodoro`, `updateTasksOnGoalDelete`
 
 ### MODIFIED
 
-- `src/components/Timer.tsx`: タスク連携UI追加
-- `src/storage.ts`: タスクCRUD操作追加
-- `src/App.tsx`: TaskListコンポーネント統合
+- **`src/components/Timer.tsx`**: Props追加（`activeTaskId`, `activeTaskTitle`, `onSetActiveTaskId`）、タスク名表示UI追加
+- **`src/storage.ts`**: タスクCRUD関数追加（上記ADDED参照）
+- **`src/App.tsx`**: `tab`型に`'tasks'`追加、`activeTaskId` state追加、TaskList統合、`handlePomodoroComplete`拡張（`incrementTaskPomodoro`呼び出し）
+- **`src/components/GoalList.tsx`**: `onGoalDelete` prop追加（ゴール削除時に`updateTasksOnGoalDelete`をApp経由で呼び出す）
 
 ### REMOVED
 
@@ -75,13 +88,18 @@ ADHDユーザーの「やれそう感」設計を重視したタスク管理機�
 - `src/components/TaskList.tsx`
 - `src/components/TaskCard.tsx`
 - `src/components/TaskForm.tsx`
-- `src/types/task.ts`
+- `src/components/TaskList.test.tsx`
+- `src/components/TaskCard.test.tsx`
+- `src/components/TaskForm.test.tsx`
+- `src/storage.test.ts`（タスク関連テスト追加）
 
 ### MODIFIED
 
+- `src/types.ts`（Task interface 追加）
 - `src/components/Timer.tsx`
 - `src/storage.ts`
 - `src/App.tsx`
+- `src/components/GoalList.tsx`
 
 ### REMOVED
 
@@ -135,7 +153,7 @@ ADHDユーザーの「やれそう感」設計を重視したタスク管理機�
 - REQ-TC-001 → TaskFormコンポーネント → `src/components/TaskForm.tsx` → TaskForm.test.tsx
 - REQ-TC-002 → タスク完了処理 → `src/storage.ts` → storage.test.ts
 - REQ-TC-003 → タスク削除処理 → `src/storage.ts` → storage.test.ts
-- REQ-TC-004 → タスクデータ型 → `src/types/task.ts` → types.test.ts
+- REQ-TC-004 → タスクデータ型 → `src/types.ts` → storage.test.ts
 - REQ-TC-005 → ゴール削除連携 → `src/storage.ts` → storage.test.ts
 
 ## Approval
@@ -143,4 +161,4 @@ ADHDユーザーの「やれそう感」設計を重視したタスク管理機�
 - [x] Technical review complete（requirements定義フェーズ）
 - [x] Product review complete（がちTODO統合方針確定済み）
 - [ ] Security review complete（フルクライアントサイドのため不要）
-- [x] Ready to apply（requirements定義完了、次フェーズはdesign）
+- [x] Ready to apply（design完了、次フェーズはtasks → implement）
