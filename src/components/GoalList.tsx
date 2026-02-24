@@ -6,9 +6,10 @@ import './GoalList.css'
 interface Props {
   activeGoalId: string | null
   onSetActiveGoalId: (id: string | null) => void
+  onGoalDelete?: (goalId: string) => void
 }
 
-export default function GoalList({ activeGoalId, onSetActiveGoalId }: Props) {
+export default function GoalList({ activeGoalId, onSetActiveGoalId, onGoalDelete }: Props) {
   const [goals, setGoals] = useState<Goal[]>(loadGoals)
   const [input, setInput] = useState('')
 
@@ -39,6 +40,7 @@ export default function GoalList({ activeGoalId, onSetActiveGoalId }: Props) {
 
   const remove = (id: string) => {
     if (activeGoalId === id) onSetActiveGoalId(null)
+    onGoalDelete?.(id)
     setGoals(prev => prev.filter(g => g.id !== id))
   }
 

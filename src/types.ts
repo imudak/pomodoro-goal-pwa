@@ -15,3 +15,14 @@ export interface DayRecord {
   goalsCompleted: number
   goalsTotal: number
 }
+
+export interface Task {
+  id: string
+  title: string
+  goalId: string | null
+  completed: boolean
+  estimatedPomodoros: number | null
+  completedPomodoros: number
+  createdAt: string
+  updatedAt: string
+}

@@ -1,8 +1,9 @@
-import type { Goal, DayRecord } from './types'
+import type { Goal, DayRecord, Task } from './types'
 
 const GOALS_KEY = 'pomogoal_goals'
 const HISTORY_KEY = 'pomogoal_history'
 const TODAY_POMOS_KEY = 'pomogoal_today_pomos'
+const TASKS_KEY = 'pomogoal_tasks'
 
 function today(): string {
   return new Date().toISOString().slice(0, 10)
@@ -104,4 +105,79 @@ export function loadHistory(): DayRecord[] {
   } catch {
     return []
   }
+}
+
+// ── タスク関連 ──────────────────────────────────────────────────
+
+export function loadTasks(): Task[] {
+  try {
+    const raw = localStorage.getItem(TASKS_KEY)
+    if (!raw) return []
+    return JSON.parse(raw) as Task[]
+  } catch (e) {
+    console.error('[storage] loadTasks failed:', e)
+    return []
+  }
+}
+
+export function saveTasks(tasks: Task[]): void {
+  try {
+    localStorage.setItem(TASKS_KEY, JSON.stringify(tasks))
+  } catch (e) {
+    console.error('[storage] saveTasks failed:', e)
+  }
+}
+
+export function addTask(
+  input: Pick<Task, 'title' | 'goalId' | 'estimatedPomodoros'>
+): Task {
+  const now = new Date().toISOString()
+  const task: Task = {
+    id: crypto.randomUUID(),
+    title: input.title,
+    goalId: input.goalId,
+    completed: false,
+    estimatedPomodoros: input.estimatedPomodoros,
+    completedPomodoros: 0,
+    createdAt: now,
+    updatedAt: now,
+  }
+  const tasks = loadTasks()
+  saveTasks([...tasks, task])
+  return task
+}
+
+export function toggleTaskComplete(id: string): void {
+  const tasks = loadTasks()
+  const updated = tasks.map(t =>
+    t.id === id
+      ? { ...t, completed: !t.completed, updatedAt: new Date().toISOString() }
+      : t
+  )
+  saveTasks(updated)
+}
+
+export function deleteTask(id: string): void {
+  const tasks = loadTasks()
+  saveTasks(tasks.filter(t => t.id !== id))
+}
+
+export function incrementTaskPomodoro(id: string): void {
+  const tasks = loadTasks()
+  const updated = tasks.map(t =>
+    t.id === id
+      ? { ...t, completedPomodoros: t.completedPomodoros + 1, updatedAt: new Date().toISOString() }
+      : t
+  )
+  saveTasks(updated)
+}
+
+export function updateTasksOnGoalDelete(goalId: string): void {
+  const tasks = loadTasks()
+  const updated = tasks.map(t =>
+    t.goalId === goalId
+      ? { ...t, goalId: null, updatedAt: new Date().toISOString() }
+      : t
+  )
+  saveTasks(updated)
 }

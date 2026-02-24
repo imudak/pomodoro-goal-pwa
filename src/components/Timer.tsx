@@ -19,9 +19,12 @@ interface Props {
   onPomodoroComplete: () => void
   activeGoalId: string | null
   onSetActiveGoalId: (id: string | null) => void
+  activeTaskId: string | null
+  activeTaskTitle: string | null
+  onSetActiveTaskId: (id: string | null) => void
 }
 
-export default function Timer({ onPomodoroComplete, activeGoalId, onSetActiveGoalId }: Props) {
+export default function Timer({ onPomodoroComplete, activeGoalId, onSetActiveGoalId, activeTaskTitle }: Props) {
   const [mode, setMode] = useState<TimerMode>('work')
   const [seconds, setSeconds] = useState(DURATIONS.work)
   const [running, setRunning] = useState(false)
@@ -141,6 +144,11 @@ export default function Timer({ onPomodoroComplete, activeGoalId, onSetActiveGoa
         {activeGoal && (
           <div className="timer-goal-active">
             🎯 {activeGoal.text}
+          </div>
+        )}
+        {activeTaskTitle && (
+          <div className="timer-task-active">
+            ✅ {activeTaskTitle}
           </div>
         )}
       </div>

@@ -2,7 +2,7 @@
 
 **Change ID**: CHANGE-001
 **Date**: 2026-02-24
-**Status**: Pending
+**Status**: Applied
 
 ## Description
 
@@ -129,8 +129,8 @@ ADHDユーザーの「やれそう感」設計を重視したタスク管理機�
 
 ### Test Changes
 
-- [ ] Unit tests updated（TaskList, TaskCard, TaskFormコンポーネント）
-- [ ] Integration tests updated（タスク×ポモドーロ連動）
+- [x] Unit tests updated（TaskList, TaskCard, TaskFormコンポーネント）
+- [x] Integration tests updated（タスク×ポモドーロ連動）
 - [ ] E2E tests updated
 
 ### Test Coverage
